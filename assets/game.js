@@ -15,6 +15,9 @@ const state = {
     loop: null
 }
 
+let gameStartTime = 0;
+let gameEndTime = 0;
+
 const shuffle = array => {
     const clonedArray = [...array]
 
@@ -71,6 +74,7 @@ const generateGame = () => {
 
   const parser = new DOMParser().parseFromString(cards, 'text/html');
   selectors.board.replaceWith(parser.querySelector('.board'));
+  gameStartTime = new Date().getTime() / 1000;
 }
 
 const startGame = () => {
@@ -88,7 +92,49 @@ const startGame = () => {
           endGame(); // Call the function to end the game when the time limit is reached
       }
     }, 1000)
+
+    gameStartTime = new Date().getTime() / 1000;
+    setTimeout(() => {
+      startDistractionPopups();
+    }, 30000); // Start random popups after 30 seconds
 }
+
+const startDistractionPopups = () => {
+  const interval = setInterval(() => {
+    const currentTime = new Date().getTime() / 1000;
+    const timeElapsed = currentTime - gameStartTime;
+    const remainingTime = 300 - timeElapsed;
+
+    if (remainingTime <= 30) {
+      clearInterval(interval);
+      return;
+    }
+
+    if (remainingTime <= 60 && Math.random() < 0.5) {
+      displayDistraction();
+    } else if (Math.random() < 0.3) {
+      displayDistraction();
+    }
+  }, 10000); // Show popups every 10 seconds
+};
+
+const displayDistraction = () => {
+  const distractionType = Math.random() < 0.5 ? 'image' : 'video';
+
+  if (distractionType === 'image') {
+    fetch('https://meme-api.com/gimme')
+      .then(response => response.json())
+      .then(data => {
+        const distractionImageURL = data.url;
+        displayImage(distractionImageURL);
+      })
+      .catch(error => {
+        console.error('Error fetching meme image:', error);
+      });
+  } else {
+    fetchVideoContent();
+  }
+};
 
 const flipBackCards = () => {
     document.querySelectorAll('.card:not(.matched)').forEach(card => {
@@ -247,16 +293,20 @@ const distractionPopup = () => {
     closeButtonFooter.className = 'distraction-close';
     closeButtonFooter.innerHTML = 'Close';
     footer.appendChild(closeButtonFooter);
-  
-    closeButton.addEventListener('click', () => {
+    modal.addEventListener('click', () => {
       modal.remove();
       backdrop.remove();
     });
+    
+    // closeButton.addEventListener('click', () => {
+    //   modal.remove();
+    //   backdrop.remove();
+    // });
   
-    closeButtonFooter.addEventListener('click', () => {
-      modal.remove();
-      backdrop.remove();
-    });
+    // closeButtonFooter.addEventListener('click', () => {
+    //   modal.remove();
+    //   backdrop.remove();
+    // });
   
     modal.appendChild(footer);
   
@@ -266,7 +316,7 @@ const distractionPopup = () => {
   
   const displayVideo = (videoEmbedUrl) => {
     const { modal, backdrop } = createModal();
-  
+
     const header = document.createElement('div');
     header.className = 'modal-header';
     const closeButton = document.createElement('span');
@@ -297,15 +347,20 @@ const distractionPopup = () => {
     closeButtonFooter.innerHTML = 'Close';
     footer.appendChild(closeButtonFooter);
   
-    closeButton.addEventListener('click', () => {
+    modal.addEventListener('click', () => {
       modal.remove();
       backdrop.remove();
     });
+
+    // closeButton.addEventListener('click', () => {
+    //   modal.remove();
+    //   backdrop.remove();
+    // });
   
-    closeButtonFooter.addEventListener('click', () => {
-      modal.remove();
-      backdrop.remove();
-    });
+    // closeButtonFooter.addEventListener('click', () => {
+    //   modal.remove();
+    //   backdrop.remove();
+    // });
   
     modal.appendChild(footer);
   
