@@ -19,6 +19,8 @@ let timeLimit = 300;
 let initialPopUpInterval  = 7; // in seconds
 let startPopupTime = 30; //pop up begin spawning after a 30-second pass
 let stopPopupTime = 30; //stop spawning 30 seconds before the end
+let videoWidth = 640; 
+let videoHeight = 360; 
 
 initialPopUpInterval *= 1000;
 
@@ -318,6 +320,8 @@ const endGame = () => {
     video.allow =
       'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
     video.allowFullscreen = true;
+    video.width = videoWidth; // Set the desired width
+    video.height = videoHeight; // Set the desired height
     video.frameBorder = 0;
     video.className = 'distraction-video';
     body.appendChild(video);
