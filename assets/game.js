@@ -15,8 +15,12 @@ const state = {
     loop: null
 }
 
-let gameStartTime = 0;
-let gameEndTime = 0;
+let timeLimit = 300;
+let initialPopUpInterval  = 7; // in seconds
+let startPopupTime = 30; //pop up begin spawning after a 30-second pass
+let stopPopupTime = 30; //stop spawning 30 seconds before the end
+
+initialPopUpInterval *= 1000;
 
 const shuffle = array => {
     const clonedArray = [...array]
@@ -74,11 +78,10 @@ const generateGame = () => {
 
   const parser = new DOMParser().parseFromString(cards, 'text/html');
   selectors.board.replaceWith(parser.querySelector('.board'));
-  gameStartTime = new Date().getTime() / 1000;
 }
 
 const startGame = () => {
-    distractionPopup();
+    startDistractionPopups();
     state.gameStarted = true
     selectors.start.classList.add('disabled')
 
@@ -86,54 +89,60 @@ const startGame = () => {
         state.totalTime++
 
         selectors.moves.innerText = `${state.totalFlips} moves`
-        selectors.timer.innerText = `time: ${state.totalTime} sec`
+        selectors.timer.innerText = `time remaining: ${ timeLimit - state.totalTime} sec`
 
-        if (state.totalTime >= 300) {
+        if (state.totalTime >= timeLimit) {
           endGame(); // Call the function to end the game when the time limit is reached
-      }
+        }
     }, 1000)
 
-    gameStartTime = new Date().getTime() / 1000;
-    setTimeout(() => {
-      startDistractionPopups();
-    }, 30000); // Start random popups after 30 seconds
 }
 
 const startDistractionPopups = () => {
-  const interval = setInterval(() => {
-    const currentTime = new Date().getTime() / 1000;
-    const timeElapsed = currentTime - gameStartTime;
-    const remainingTime = 300 - timeElapsed;
+  let popUpInterval = initialPopUpInterval
+  if (state.totalTime > startPopupTime) {
+    //console.log('hi after 30');
+    //console.log(state.totalTime);
+    const timeElapsed = state.totalTime;
+    const remainingTime = timeLimit - timeElapsed;
 
-    if (remainingTime <= 30) {
-      clearInterval(interval);
+    if (remainingTime <= stopPopupTime) {
+      console.log('hi before remaining 30');
+      console.log(state.totalTime);
       return;
     }
-
-    if (remainingTime <= 60 && Math.random() < 0.5) {
-      displayDistraction();
-    } else if (Math.random() < 0.3) {
-      displayDistraction();
+    distractionPopup();
+  
+    if (remainingTime > 60) { // 60 seconds left
+      const progressPercentage = 1 - (remainingTime - 60) / (timeLimit - 60);
+      popUpInterval = Math.max(initialPopUpInterval - intervalDecrease, 2000); // Ensure the interval doesn't go below 2000 milliseconds
     }
-  }, 10000); // Show popups every 10 seconds
+    console.log('popUpInterval: '+popUpInterval)
+  }
+  setTimeout(startDistractionPopups, popUpInterval );
 };
 
-const displayDistraction = () => {
-  const distractionType = Math.random() < 0.5 ? 'image' : 'video';
-
-  if (distractionType === 'image') {
+const distractionPopup = () => {
+  const randomTime = Math.floor(Math.random() * 2000) + 1000; // Random time delay 
+  setTimeout(() => {
     fetch('https://meme-api.com/gimme')
       .then(response => response.json())
       .then(data => {
-        const distractionImageURL = data.url;
-        displayImage(distractionImageURL);
+        const distractionType = Math.random() < 0.5 ? 'image' : 'video';
+
+        if (distractionType === 'image') {
+          const distractionImageURL = data.url;
+          displayImage(distractionImageURL);
+        } else {
+          fetchVideoContent();
+        }
       })
       .catch(error => {
         console.error('Error fetching meme image:', error);
       });
-  } else {
-    fetchVideoContent();
-  }
+
+   // distractionPopup(); // Schedule the next distraction
+  }, randomTime);
 };
 
 const flipBackCards = () => {
@@ -208,7 +217,7 @@ const endGame = () => {
   selectors.win.innerHTML = `
       <span class="win-text">
           Game over!<br />
-          You reached the time limit of 300 seconds.<br />
+          You reached the time limit of ${timeLimit} seconds.<br />
           with <span class="highlight">${state.totalFlips}</span> moves<br />
           under <span class="highlight">${state.totalTime}</span> seconds
       </span>
@@ -217,30 +226,6 @@ const endGame = () => {
 };
 
 
-const distractionPopup = () => {
-    const randomTime = Math.floor(Math.random() * 3000) + 2000; // Random time delay between 2 to 5 seconds
-  
-    setTimeout(() => {
-      fetch('https://meme-api.com/gimme')
-        .then(response => response.json())
-        .then(data => {
-          const distractionType = Math.random() < 0.5 ? 'image' : 'video';
-  
-          if (distractionType === 'image') {
-            const distractionImageURL = data.url;
-            displayImage(distractionImageURL);
-          } else {
-            fetchVideoContent();
-          }
-        })
-        .catch(error => {
-          console.error('Error fetching meme image:', error);
-        });
-  
-      distractionPopup(); // Schedule the next distraction
-    }, randomTime);
-  };
-  
   const fetchVideoContent = () => {
     fetch('assets/videos.json')
       .then(response => response.json())
@@ -258,8 +243,8 @@ const distractionPopup = () => {
   
   const getEmbeddedVideoUrl = (url) => {
     const videoId = url.match(/v=([^&]+)/)[1];
-    // return `https://www.youtube.com/embed/${videoId}?rel=0&autoplay=1`;
-    return `https://www.youtube.com/embed/${videoId}`;
+    return `https://www.youtube.com/embed/${videoId}?rel=0&autoplay=1`;
+    // return `https://www.youtube.com/embed/${videoId}`;
   };
   
   const displayImage = (imageURL) => {
