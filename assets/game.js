@@ -115,8 +115,10 @@ const startDistractionPopups = () => {
     }
     distractionPopup();
   
-    if (remainingTime > 60) { // 60 seconds left
+    if (remainingTime > 60) {
       const progressPercentage = 1 - (remainingTime - 60) / (timeLimit - 60);
+      let intervalDecrease = Math.floor(progressPercentage * (initialPopUpInterval - 2000));
+      intervalDecrease = Math.min(intervalDecrease, initialPopUpInterval - 2000); // Ensure the interval decrease doesn't exceed the maximum allowed
       popUpInterval = Math.max(initialPopUpInterval - intervalDecrease, 2000); // Ensure the interval doesn't go below 2000 milliseconds
     }
     console.log('popUpInterval: '+popUpInterval)
