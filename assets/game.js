@@ -4,7 +4,8 @@ const selectors = {
     moves: document.querySelector('.moves'),
     timer: document.querySelector('.timer'),
     start: document.querySelector('button'),
-    win: document.querySelector('.win')
+    win: document.querySelector('.win'),
+    title: document.querySelector("#gameTitle")
 }
 
 const state = {
@@ -15,14 +16,19 @@ const state = {
     loop: null
 }
 
+let gameTitle = "Chaos Recall: Memory Aesthetics";
 let timeLimit = 300;
+let minimumInterval = 1; // in seconds, minimum spawning interval time
 let initialPopUpInterval  = 7; // in seconds
-let startPopupTime = 30; //pop up begin spawning after a 30-second pass
+let startPopupTime = 10; //pop up begin spawning after a 30-second pass
 let stopPopupTime = 30; //stop spawning 30 seconds before the end
 let videoWidth = 640; 
 let videoHeight = 360; 
+let intervalIntense = 2; // it will multiply the intense in the middle of the game 2x. change as your need
 
 initialPopUpInterval *= 1000;
+minimumInterval *= 1000;
+selectors.title.textContent = gameTitle;
 
 const shuffle = array => {
     const clonedArray = [...array]
@@ -114,14 +120,23 @@ const startDistractionPopups = () => {
       return;
     }
     distractionPopup();
-  
+
     if (remainingTime > 60) {
-      const progressPercentage = 1 - (remainingTime - 60) / (timeLimit - 60);
+      const progressPercentage = (1 - (remainingTime - 60) / (timeLimit - 60));
       let intervalDecrease = Math.floor(progressPercentage * (initialPopUpInterval - 2000));
-      intervalDecrease = Math.min(intervalDecrease, initialPopUpInterval - 2000); // Ensure the interval decrease doesn't exceed the maximum allowed
-      popUpInterval = Math.max(initialPopUpInterval - intervalDecrease, 2000); // Ensure the interval doesn't go below 2000 milliseconds
+      intervalDecrease = Math.min(intervalDecrease, initialPopUpInterval - 2000);
+
+      // Adjust the intensity in the middle of the game
+      if (progressPercentage >= 0.5) {
+        const intensifiedProgress = (progressPercentage - 0.5) * intervalIntense + 0.5;
+        intervalDecrease *= intensifiedProgress;
+      }
+
+      popUpInterval = Math.max(initialPopUpInterval - intervalDecrease, minimumInterval);
+      console.log('game progress: '+progressPercentage.toFixed(3) + "%")
     }
-    console.log('popUpInterval: '+popUpInterval)
+
+    console.log('next pop-up in: '+(popUpInterval/1000).toFixed(2)+' sec')
   }
   setTimeout(startDistractionPopups, popUpInterval );
 };

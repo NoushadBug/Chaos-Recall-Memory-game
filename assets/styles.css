@@ -11,6 +11,10 @@ html {
     font-family: Fredoka;
 }
 
+#gameTitle{
+  text-align: center;
+}
+
 .game {
     position: absolute;
     top: 50%;
