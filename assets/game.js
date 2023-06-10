@@ -18,13 +18,13 @@ const state = {
 
 let gameTitle = "Chaos Recall: Memory Aesthetics";
 let timeLimit = 300;
-let minimumInterval = 1; // in seconds, minimum spawning interval time
-let initialPopUpInterval  = 7; // in seconds
+let minimumInterval = 0.3; // in seconds, minimum spawning interval time
+let initialPopUpInterval  = 4; // in seconds
 let startPopupTime = 30; //pop up begin spawning after a 30-second pass
 let stopPopupTime = 30; //stop spawning 30 seconds before the end
 let videoWidth = 640; 
 let videoHeight = 360; 
-let intervalIntense = 2; // it will multiply the intense in the middle of the game 2x. change as your need
+let intervalIntense = 3; // it will multiply the intense in the middle of the game 2x. change as your need
 
 initialPopUpInterval *= 1000;
 minimumInterval *= 1000;
