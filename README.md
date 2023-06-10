@@ -2,6 +2,8 @@
 
 Chaos Recall: Memory Aesthetics is a game designed to represent the challenges faced by individuals with ADHD (Attention-Deficit/Hyperactivity Disorder). It aims to provide an immersive experience that simulates the mind's tendency to get easily distracted and the struggle to maintain focus.
 
+Game Preview: https://chaos-recall-memorygame.web.app
+
 ## Game Description
 
 Chaos Recall: Memory Aesthetics is a memory-based game where players are presented with a grid of tiles, each containing a unique image. The objective is to remember the positions of the images and match them by flipping over two tiles at a time. As the game progresses, distraction pop-ups appear at intervals, hindering the player's concentration and making it harder to recall the tile positions.
