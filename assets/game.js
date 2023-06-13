@@ -16,10 +16,10 @@ const state = {
     loop: null
 }
 
-let gameTitle = "this is for test";
+let gameTitle = "Chaos Recall: Memory Aesthetics";
 let timeLimit = 300;
 let minimumInterval = 0.3; // in seconds, minimum spawning interval time
-let initialPopUpInterval  = 4; // in seconds
+let initialPopUpInterval  = 5; // in seconds
 let startPopupTime = 30; //pop up begin spawning after a 30-second pass
 let stopPopupTime = 30; //stop spawning 30 seconds before the end
 let videoWidth = 640; 
