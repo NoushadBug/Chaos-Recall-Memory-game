@@ -20,7 +20,7 @@ let gameTitle = "Chaos Recall: Memory Aesthetics";
 let timeLimit = 300;
 let minimumInterval = 0.3; // in seconds, minimum spawning interval time
 let initialPopUpInterval  = 5; // in seconds
-let startPopupTime = 30; //pop up begin spawning after a 30-second pass
+let startPopupTime = 3; //pop up begin spawning after a 30-second pass
 let stopPopupTime = 30; //stop spawning 30 seconds before the end
 let videoWidth = 640; 
 let videoHeight = 360; 
@@ -384,8 +384,8 @@ const endGame = () => {
     // Calculate random position
     const screenWidth = window.innerWidth;
     const screenHeight = window.innerHeight;
-    const randomX = Math.floor(Math.random() * (screenWidth - 400));
-    const randomY = Math.floor(Math.random() * (screenHeight - 500));
+    const randomX = Math.floor(Math.random() * (screenWidth - (400*2)));
+    const randomY = Math.floor(Math.random() * (screenHeight - (500*2)));
   
     // Set modal position
     modal.style.left = `${randomX}px`;
