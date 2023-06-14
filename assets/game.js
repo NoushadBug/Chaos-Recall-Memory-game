@@ -4,8 +4,8 @@ const selectors = {
     moves: document.querySelector('.moves'),
     timer: document.querySelector('.timer'),
     start: document.querySelector('#start_btn'),
-    sound_btn: document.querySelector('#toggle_sound'),
-    music_btn: document.querySelector('#toggle_music'),
+    // sound_btn: document.querySelector('#toggle_sound'),
+    // music_btn: document.querySelector('#toggle_music'),
     // tick_btn: document.querySelector('#toggle_tick'),
     win: document.querySelector('.win'),
     title: document.querySelector("#gameTitle")
@@ -37,53 +37,7 @@ let intervalIntense = 3; // it will multiply the intense in the middle of the ga
 initialPopUpInterval *= 1000;
 minimumInterval *= 1000;
 selectors.title.textContent = gameTitle;
-// Function to check and apply initial button opacity
-function setButtonOpacity() {
-  const isSoundEnabled = localStorage.getItem('settings.sound') === 'true';
-  const isMusicEnabled = localStorage.getItem('settings.music') === 'true';
 
-  selectors.sound_btn.style.opacity = isSoundEnabled ? '' : '0.5';
-  selectors.music_btn.style.opacity = isMusicEnabled ? '' : '0.5';
-}
-
-// Apply initial button opacity when the page loads
-setButtonOpacity();
-
-// Event listener for sound button
-selectors.sound_btn.addEventListener('click', () => {
-  const isSoundEnabled = localStorage.getItem('settings.sound') === 'true';
-  const updatedSoundState = !isSoundEnabled;
-  localStorage.setItem('settings.sound', String(updatedSoundState));
-
-  if (updatedSoundState) {
-    selectors.sound_btn.style.opacity = '';
-  } else {
-    selectors.sound_btn.style.opacity = '0.5';
-  }
-});
-
-// Event listener for music button
-selectors.music_btn.addEventListener('click', () => {
-  const isMusicEnabled = localStorage.getItem('settings.music') === 'true';
-  const updatedMusicState = !isMusicEnabled;
-  localStorage.setItem('settings.music', String(updatedMusicState));
-
-  if (updatedMusicState) {
-    selectors.music_btn.style.opacity = '';
-  } else {
-    selectors.music_btn.style.opacity = '0.5';
-  }
-
-  backgroundMusicTrigger();
-});
-
-
-// selectors.tick_btn.addEventListener('click', () => {
-//   const isMusicEnabled = localStorage.getItem('settings.tick') === 'true';
-//   const updatedMusicState = !isMusicEnabled;
-//   localStorage.setItem('settings.tick', String(updatedMusicState));
-//   tickingMusicTrigger()
-// });
 
 
 const shuffle = array => {
@@ -329,7 +283,7 @@ const endGame = () => {
   selectors.boardContainer.classList.add('flipped');
   selectors.win.innerHTML = `
       <span class="win-text">
-          Game over!<br />
+          You Lose!<br />
           You reached the time limit of ${timeLimit} seconds.<br />
           with <span class="highlight">${state.totalFlips}</span> moves<br />
           under <span class="highlight">${state.totalTime}</span> seconds

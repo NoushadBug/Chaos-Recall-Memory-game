@@ -26,15 +26,11 @@ const backgroundMusic = new Howl({
   });
   
   function playPromptAlertSound() {
-    if (localStorage.getItem('settings.sound') === 'true') {
       promptingAlertSound.play();
-    }
   }
   
   function playCorrectSound() {
-    if (localStorage.getItem('settings.sound') === 'true') {
       correctSound.play();
-    }
   }
 
   function stopTickingSound() {
@@ -43,15 +39,11 @@ const backgroundMusic = new Howl({
   
   
   function playWrongSound() {
-    if (localStorage.getItem('settings.sound') === 'true') {
       wrongSound.play();
-    }
   }
   
   function playTickingSound() {
-    // if (localStorage.getItem('settings.sound') === 'true') {
       tickingSound.play();
-    // }
   }
   
   // Check user settings and play music if enabled
@@ -65,14 +57,6 @@ const backgroundMusic = new Howl({
   //   }
   // }
 
-  function backgroundMusicTrigger(){
-    if (localStorage.getItem('settings.music') === 'true') {
-      backgroundMusic.play();
-    }
-    else if (localStorage.getItem('settings.music') === 'false') {
-      backgroundMusic.stop();
-    }
-  }
-  backgroundMusicTrigger()
-
+ backgroundMusic.play();
+  
   
