@@ -99,6 +99,7 @@ const generateGame = () => {
 }
 
 const startGame = () => {
+  startTickingSound()
   startDistractionPopups();
   state.gameStarted = true;
   selectors.start.classList.add('disabled');

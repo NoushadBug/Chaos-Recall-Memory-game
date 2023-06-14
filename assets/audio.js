@@ -37,6 +37,10 @@ const backgroundMusic = new Howl({
     tickingSound.stop();
   }
   
+  function startTickingSound() {
+    tickingSound.play();
+  }
+  
   
   function playWrongSound() {
       wrongSound.play();
