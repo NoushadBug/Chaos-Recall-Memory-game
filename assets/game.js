@@ -381,11 +381,12 @@ const endGame = () => {
     const backdrop = document.createElement('div');
     backdrop.className = 'modal-backdrop';
   
-    // Calculate random position
-    const screenWidth = window.innerWidth;
-    const screenHeight = window.innerHeight;
-    const randomX = Math.floor(Math.random() * (screenWidth - (400*2)));
-    const randomY = Math.floor(Math.random() * (screenHeight - (500*2)));
+    const board = document.querySelector('.board');
+    const boardRect = board.getBoundingClientRect();
+  
+    // Calculate random position relative to the board
+    const randomX = Math.floor(Math.random() * (boardRect.width - 400)) + boardRect.left;
+    const randomY = Math.floor(Math.random() * (boardRect.height - 500)) + boardRect.top;
   
     // Set modal position
     modal.style.left = `${randomX}px`;
@@ -393,6 +394,7 @@ const endGame = () => {
   
     return { modal, backdrop };
   };
+  
   
 
 generateGame()
