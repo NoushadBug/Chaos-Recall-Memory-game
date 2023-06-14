@@ -48,15 +48,15 @@ const backgroundMusic = new Howl({
   
   // Check user settings and play music if enabled
   
-  // function tickingMusicTrigger(){
-  //   if (localStorage.getItem('settings.music') === 'true') {
-  //     tickingSound.play();
-  //   }
-  //   else if (localStorage.getItem('settings.music') === 'false') {
-  //     tickingSound.stop();
-  //   }
-  // }
+  function startBackgroundMusic() {
+    backgroundMusic.play();
+  }
+  
+  function stopBackgroundMusic() {
+    backgroundMusic.stop();
+  }
+  
 
- backgroundMusic.play();
+  
   
   

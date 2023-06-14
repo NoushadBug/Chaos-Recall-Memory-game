@@ -99,23 +99,30 @@ const generateGame = () => {
 }
 
 const startGame = () => {
-    playTickingSound();
-    startDistractionPopups();
-    state.gameStarted = true
-    selectors.start.classList.add('disabled')
-
-    state.loop = setInterval(() => {
-        state.totalTime++
-
-        selectors.moves.innerText = `${state.totalFlips} moves`
-        selectors.timer.innerText = `time remaining: ${ timeLimit - state.totalTime} sec`
-
-        if (state.totalTime >= timeLimit) {
-          endGame(); // Call the function to end the game when the time limit is reached
-        }
-    }, 1000)
-
-}
+  startDistractionPopups();
+  state.gameStarted = true;
+  selectors.start.classList.add('disabled');
+  
+  // Start background music after 60 seconds
+  setTimeout(() => {
+    startBackgroundMusic();
+  }, 60000);
+  
+  state.loop = setInterval(() => {
+    state.totalTime++;
+    
+    selectors.moves.innerText = `${state.totalFlips} moves`;
+    selectors.timer.innerText = `time remaining: ${timeLimit - state.totalTime} sec`;
+    
+    if (state.totalTime >= timeLimit - 30) {
+      stopBackgroundMusic(); // Stop background music 30 seconds before game end
+    }
+    
+    if (state.totalTime >= timeLimit) {
+      endGame(); // Call the function to end the game when the time limit is reached
+    }
+  }, 1000);
+};
 
 const startDistractionPopups = () => {
   let popUpInterval = initialPopUpInterval
