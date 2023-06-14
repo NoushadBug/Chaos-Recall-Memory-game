@@ -49,9 +49,9 @@ const backgroundMusic = new Howl({
   }
   
   function playTickingSound() {
-    if (localStorage.getItem('settings.sound') === 'true') {
+    // if (localStorage.getItem('settings.sound') === 'true') {
       tickingSound.play();
-    }
+    // }
   }
   
   // Check user settings and play music if enabled
