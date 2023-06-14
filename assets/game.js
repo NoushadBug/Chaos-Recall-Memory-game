@@ -3,7 +3,10 @@ const selectors = {
     board: document.querySelector('.board'),
     moves: document.querySelector('.moves'),
     timer: document.querySelector('.timer'),
-    start: document.querySelector('button'),
+    start: document.querySelector('#start_btn'),
+    sound_btn: document.querySelector('#toggle_sound'),
+    music_btn: document.querySelector('#toggle_music'),
+    // tick_btn: document.querySelector('#toggle_tick'),
     win: document.querySelector('.win'),
     title: document.querySelector("#gameTitle")
 }
@@ -16,19 +19,44 @@ const state = {
     loop: null
 }
 
+
+
 let gameTitle = "Chaos Recall: Memory Aesthetics";
+let isDistractionEnabled = true;
 let timeLimit = 300;
 let minimumInterval = 0.3; // in seconds, minimum spawning interval time
 let initialPopUpInterval  = 5; // in seconds
-let startPopupTime = 30; //pop up begin spawning after a 30-second pass
+let startPopupTime = 3; //pop up begin spawning after a 30-second pass
 let stopPopupTime = 30; //stop spawning 30 seconds before the end
 let videoWidth = 640; 
 let videoHeight = 360; 
 let intervalIntense = 3; // it will multiply the intense in the middle of the game 2x. change as your need
 
+
+
 initialPopUpInterval *= 1000;
 minimumInterval *= 1000;
 selectors.title.textContent = gameTitle;
+selectors.sound_btn.addEventListener('click', () => {
+  const isSoundEnabled = localStorage.getItem('settings.sound') === 'true';
+  const updatedSoundState = !isSoundEnabled;
+  localStorage.setItem('settings.sound', String(updatedSoundState));
+});
+
+selectors.music_btn.addEventListener('click', () => {
+  const isMusicEnabled = localStorage.getItem('settings.music') === 'true';
+  const updatedMusicState = !isMusicEnabled;
+  localStorage.setItem('settings.music', String(updatedMusicState));
+  backgroundMusicTrigger()
+});
+
+// selectors.tick_btn.addEventListener('click', () => {
+//   const isMusicEnabled = localStorage.getItem('settings.tick') === 'true';
+//   const updatedMusicState = !isMusicEnabled;
+//   localStorage.setItem('settings.tick', String(updatedMusicState));
+//   tickingMusicTrigger()
+// });
+
 
 const shuffle = array => {
     const clonedArray = [...array]
@@ -89,6 +117,7 @@ const generateGame = () => {
 }
 
 const startGame = () => {
+    playTickingSound();
     startDistractionPopups();
     state.gameStarted = true
     selectors.start.classList.add('disabled')
@@ -143,6 +172,12 @@ const startDistractionPopups = () => {
 
 const distractionPopup = () => {
   const randomTime = Math.floor(Math.random() * 2000) + 1000; // Random time delay 
+
+  if (!isDistractionEnabled) {
+    setTimeout(distractionPopup, randomTime);
+    return; // Return early if distractions are disabled
+  }
+
   setTimeout(() => {
     fetch('https://meme-api.com/gimme')
       .then(response => response.json())
@@ -170,6 +205,26 @@ const flipBackCards = () => {
     })
 
     state.flippedCards = 0
+}
+
+const removeModals = () => {
+  const modals = document.querySelectorAll('.modal');
+  const backdrops = document.querySelectorAll('.modal-backdrop');
+
+  modals.forEach(modal => modal.remove());
+  backdrops.forEach(backdrop => backdrop.remove());
+};
+
+
+function stopGameProcess(){
+  toggleDistractions(false)
+  removeModals()
+  stopTickingSound()
+}
+
+// Function to toggle distractions on/off
+function toggleDistractions(enable) {
+  isDistractionEnabled = enable;
 }
 
 const flipCard = card => {
@@ -202,13 +257,17 @@ const flipCard = card => {
   // If there are no more cards that we can flip, we won the game
   if (!document.querySelectorAll('.card:not(.flipped)').length) {
       setTimeout(() => {
+          stopGameProcess()
+          playCorrectSound()
           selectors.boardContainer.classList.add('flipped');
           selectors.win.innerHTML = `
               <span class="win-text">
                   You won!<br />
                   with <span class="highlight">${state.totalFlips}</span> moves<br />
                   under <span class="highlight">${state.totalTime}</span> seconds
+                  <button onclick="location.reload();" class="play-again-btn">Play Again</button>
               </span>
+
           `;
 
           clearInterval(state.loop);
@@ -224,13 +283,20 @@ const attachEventListeners = () => {
 
         if (eventTarget.className.includes('card') && !eventParent.className.includes('flipped')) {
             flipCard(eventParent)
-        } else if (eventTarget.nodeName === 'BUTTON' && !eventTarget.className.includes('disabled')) {
-            startGame()
+        } else if (
+          eventTarget.nodeName === 'BUTTON' &&
+          eventTarget.id === 'start_btn' &&
+          !eventTarget.className.includes('disabled')
+        ) {
+          startGame();
         }
+        
     })
 }
 
 const endGame = () => {
+  stopGameProcess()
+  playWrongSound()
   clearInterval(state.loop); // Stop the game loop
   selectors.boardContainer.classList.add('flipped');
   selectors.win.innerHTML = `
@@ -239,6 +305,7 @@ const endGame = () => {
           You reached the time limit of ${timeLimit} seconds.<br />
           with <span class="highlight">${state.totalFlips}</span> moves<br />
           under <span class="highlight">${state.totalTime}</span> seconds
+          <button onclick="location.reload();" class="play-again-btn">Play Again</button>
       </span>
   `;
   // Add any additional actions you want to perform at the end of the game
@@ -267,6 +334,9 @@ const endGame = () => {
   };
   
   const displayImage = (imageURL) => {
+    if (isDistractionEnabled){
+      playPromptAlertSound()
+    }
     const { modal, backdrop } = createModal();
   
     const header = document.createElement('div');
@@ -297,28 +367,34 @@ const endGame = () => {
     closeButtonFooter.className = 'distraction-close';
     closeButtonFooter.innerHTML = 'Close';
     footer.appendChild(closeButtonFooter);
-    modal.addEventListener('click', () => {
+    // modal.addEventListener('click', () => {
+    //   modal.remove();
+    //   backdrop.remove();
+    // });
+    
+    closeButton.addEventListener('click', () => {
       modal.remove();
       backdrop.remove();
     });
-    
-    // closeButton.addEventListener('click', () => {
-    //   modal.remove();
-    //   backdrop.remove();
-    // });
   
-    // closeButtonFooter.addEventListener('click', () => {
-    //   modal.remove();
-    //   backdrop.remove();
-    // });
+    closeButtonFooter.addEventListener('click', () => {
+      modal.remove();
+      backdrop.remove();
+    });
   
     modal.appendChild(footer);
-  
-    document.body.appendChild(backdrop);
-    document.body.appendChild(modal);
+
+    if (isDistractionEnabled){
+      document.body.appendChild(backdrop);
+      document.body.appendChild(modal);
+    }
+
   };
   
   const displayVideo = (videoEmbedUrl) => {
+    if (isDistractionEnabled){
+      playPromptAlertSound()
+    }
     const { modal, backdrop } = createModal();
 
     const header = document.createElement('div');
@@ -353,25 +429,27 @@ const endGame = () => {
     closeButtonFooter.innerHTML = 'Close';
     footer.appendChild(closeButtonFooter);
   
-    modal.addEventListener('click', () => {
+    // modal.addEventListener('click', () => {
+    //   modal.remove();
+    //   backdrop.remove();
+    // });
+
+    closeButton.addEventListener('click', () => {
       modal.remove();
       backdrop.remove();
     });
-
-    // closeButton.addEventListener('click', () => {
-    //   modal.remove();
-    //   backdrop.remove();
-    // });
   
-    // closeButtonFooter.addEventListener('click', () => {
-    //   modal.remove();
-    //   backdrop.remove();
-    // });
+    closeButtonFooter.addEventListener('click', () => {
+      modal.remove();
+      backdrop.remove();
+    });
   
     modal.appendChild(footer);
-  
-    document.body.appendChild(backdrop);
-    document.body.appendChild(modal);
+
+    if (isDistractionEnabled){
+      document.body.appendChild(backdrop);
+      document.body.appendChild(modal);
+    }
   };
   
   const createModal = () => {

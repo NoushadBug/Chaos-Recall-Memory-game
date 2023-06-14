@@ -75,8 +75,12 @@ button {
 .stats {
   color: #150c0c;
   font-size: 14pt;
+  width: 125%;
 }
 
+.play-again-btn{
+  margin: 1em;
+}
 .board-container {
   width: min-content;
   position: relative;
@@ -277,10 +281,13 @@ button {
   /* height: 0; */
 
 }
+.modal-close{
+  cursor: pointer;
+}
 
 /* Modal Footer */
 .modal-footer {
-  padding-top: 10px;
+  padding: 10px;
   text-align: right;
 }
 
@@ -289,6 +296,7 @@ button {
   border: none;
   font-size: 16px;
   font-weight: bold;
+  margin: 2em;
   color: #333;
   cursor: pointer;
 }
