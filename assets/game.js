@@ -37,18 +37,46 @@ let intervalIntense = 3; // it will multiply the intense in the middle of the ga
 initialPopUpInterval *= 1000;
 minimumInterval *= 1000;
 selectors.title.textContent = gameTitle;
+// Function to check and apply initial button opacity
+function setButtonOpacity() {
+  const isSoundEnabled = localStorage.getItem('settings.sound') === 'true';
+  const isMusicEnabled = localStorage.getItem('settings.music') === 'true';
+
+  selectors.sound_btn.style.opacity = isSoundEnabled ? '' : '0.5';
+  selectors.music_btn.style.opacity = isMusicEnabled ? '' : '0.5';
+}
+
+// Apply initial button opacity when the page loads
+setButtonOpacity();
+
+// Event listener for sound button
 selectors.sound_btn.addEventListener('click', () => {
   const isSoundEnabled = localStorage.getItem('settings.sound') === 'true';
   const updatedSoundState = !isSoundEnabled;
   localStorage.setItem('settings.sound', String(updatedSoundState));
+
+  if (updatedSoundState) {
+    selectors.sound_btn.style.opacity = '';
+  } else {
+    selectors.sound_btn.style.opacity = '0.5';
+  }
 });
 
+// Event listener for music button
 selectors.music_btn.addEventListener('click', () => {
   const isMusicEnabled = localStorage.getItem('settings.music') === 'true';
   const updatedMusicState = !isMusicEnabled;
   localStorage.setItem('settings.music', String(updatedMusicState));
-  backgroundMusicTrigger()
+
+  if (updatedMusicState) {
+    selectors.music_btn.style.opacity = '';
+  } else {
+    selectors.music_btn.style.opacity = '0.5';
+  }
+
+  backgroundMusicTrigger();
 });
+
 
 // selectors.tick_btn.addEventListener('click', () => {
 //   const isMusicEnabled = localStorage.getItem('settings.tick') === 'true';
