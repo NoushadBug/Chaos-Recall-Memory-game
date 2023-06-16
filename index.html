@@ -11,14 +11,17 @@
         
     </head>
     <body>
-        <div class="game">
+        <div class="game ">
             <h3 id="gameTitle"></h3>
             <div class="controls">
-                <button>Start</button>
+                <button id="start_btn">Start</button>
                 <div class="stats">
                     <div class="moves">0 moves</div>
                     <div class="timer">time remaining: 300 sec</div>
                 </div>
+                <!-- <button id="toggle_sound">🔔</button>
+                <button id="toggle_music">🔊</button> -->
+                <!-- <button id="toggle_tick">⏳</button> -->
             </div>
             <div class="board-container">
                 <div class="board" data-dimension="6"></div>
@@ -27,4 +30,8 @@
         </div>
         
     </body>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+    <script src="assets/audio.js"></script>
+
 </html>
