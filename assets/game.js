@@ -79,7 +79,7 @@ const generateGame = () => {
   const numPairs = totalCards / 2;
   const numImages = Math.min(numPairs, 23);
   const baseURL = location.origin;
-  const imagePaths = Array.from({ length: numImages }, (_, index) => `./assets/Artwork/${index + 1}.png`);
+  const imagePaths = Array.from({ length: numImages }, (_, index) => `./assets/Artwork/${index + 1}.jpg`);
   const items = shuffle([...imagePaths, ...imagePaths]);
   const cards = `
       <div class="board" style="grid-template-columns: repeat(${dimensions}, auto)">
