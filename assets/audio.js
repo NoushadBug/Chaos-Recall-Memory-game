@@ -2,7 +2,7 @@
 const backgroundMusic = new Howl({
     src: ['./assets/SFX/music/game_music.mp3'],
     loop: true,
-    volume: 0.2
+    volume: 0.7
   });
   
   // Set up other sounds
@@ -12,7 +12,7 @@ const backgroundMusic = new Howl({
   
   const promptingAlertSound = new Howl({
     src: ['./assets/SFX/prompt/iphone_1.mp3'],
-    volume: 0.5
+    volume: 1.0
   });
   
   const correctSound = new Howl({
@@ -22,7 +22,7 @@ const backgroundMusic = new Howl({
   const tickingSound = new Howl({
     src: ['./assets/SFX/music/tick-tock.wav'],
     loop: true,
-    volume: 0.7
+    volume: 1.5
   });
   
   function playPromptAlertSound() {
