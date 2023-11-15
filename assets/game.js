@@ -23,11 +23,11 @@ const state = {
 
 let gameTitle = "Chaos Recall: Memory Aesthetics";
 let isDistractionEnabled = true;
-let timeLimit = 300;
+let timeLimit = 480;
 let minimumInterval = 0.3; // in seconds, minimum spawning interval time
 let initialPopUpInterval  = 3; // in seconds
-let startPopupTime = 15; //pop up begin spawning after a 30-second pass
-let stopPopupTime = 15; //stop spawning 30 seconds before the end
+let startPopupTime = 60; //pop up begin spawning after a 30-second pass
+let stopPopupTime = 30; //stop spawning 30 seconds before the end
 let videoWidth = 640; 
 let videoHeight = 360; 
 let intervalIntense = 3; // it will multiply the intense in the middle of the game 2x. change as your need
@@ -107,7 +107,7 @@ const startGame = () => {
   // Start background music after 60 seconds
   setTimeout(() => {
     startBackgroundMusic();
-  }, 30000);
+  }, 60000);
   
   state.loop = setInterval(() => {
     state.totalTime++;
@@ -115,7 +115,7 @@ const startGame = () => {
     selectors.moves.innerText = `${state.totalFlips} moves`;
     selectors.timer.innerText = `time remaining: ${timeLimit - state.totalTime} sec`;
     
-    if (state.totalTime >= timeLimit - 15) {
+    if (state.totalTime >= timeLimit - 30) {
       stopBackgroundMusic(); // Stop background music 30 seconds before game end
     }
     
