@@ -23,10 +23,10 @@ const state = {
 
 let gameTitle = "Chaos Recall: Memory Aesthetics";
 let isDistractionEnabled = true;
-let timeLimit = 480;
+let timeLimit = 300;
 let minimumInterval = 0.3; // in seconds, minimum spawning interval time
 let initialPopUpInterval  = 3; // in seconds
-let startPopupTime = 180; //pop up begin spawning after a 30-second pass
+let startPopupTime = 60; //pop up begin spawning after a 30-second pass
 let stopPopupTime = 30; //stop spawning 30 seconds before the end
 let videoWidth = 640; 
 let videoHeight = 360; 
@@ -107,7 +107,7 @@ const startGame = () => {
   // Start background music after 60 seconds
   setTimeout(() => {
     startBackgroundMusic();
-  }, 180000);
+  }, 60000);
   
   state.loop = setInterval(() => {
     state.totalTime++;
