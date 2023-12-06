@@ -33,5 +33,28 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
     <script src="assets/audio.js"></script>
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+    
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+        apiKey: "AIzaSyBsTJMMprYLRtx0bpq3924_ifzUQ9gZZm8",
+        authDomain: "chaos-recall-memorygame.firebaseapp.com",
+        projectId: "chaos-recall-memorygame",
+        storageBucket: "chaos-recall-memorygame.appspot.com",
+        messagingSenderId: "639547254352",
+        appId: "1:639547254352:web:d79e7e60d639deb2071355",
+        measurementId: "G-0940C98C65"
+      };
+    
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+    </script>
 
 </html>
