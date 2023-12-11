@@ -1,6 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-0940C98C65"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-0940C98C65');
+        </script>
+        
+        <!-- Firebase -->
+        <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js"></script>
+        
+        <!-- Your web app's Firebase configuration -->
+        <script>
+          const firebaseConfig = {
+            apiKey: "AIzaSyBsTJMMprYLRtx0bpq3924_ifzUQ9gZZm8",
+            authDomain: "chaos-recall-memorygame.firebaseapp.com",
+            projectId: "chaos-recall-memorygame",
+            storageBucket: "chaos-recall-memorygame.appspot.com",
+            messagingSenderId: "639547254352",
+            appId: "1:639547254352:web:d79e7e60d639deb2071355",
+            measurementId: "G-0940C98C65"
+          };
+          
+          // Initialize Firebase
+          const app = firebase.initializeApp(firebaseConfig);
+          const analytics = firebase.analytics(app);
+        </script>
+
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,15 +40,7 @@
         <script src="assets/game.js" defer></script>
         
     </head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0940C98C65"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-    
-      gtag('config', 'G-0940C98C65');
-    </script>
+
     <body>
         <div class="game ">
             <h3 id="gameTitle"></h3>
