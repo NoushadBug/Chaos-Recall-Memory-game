@@ -25,12 +25,12 @@ let gameTitle = "Chaos Recall: Memory Aesthetics";
 let isDistractionEnabled = true;
 let timeLimit = 300;
 let minimumInterval = 0.2; // in seconds, minimum spawning interval time
-let initialPopUpInterval  = 2; // in seconds
+let initialPopUpInterval  = 1; // in seconds
 let startPopupTime = 20; //pop up begin spawning after a 30-second pass
-let stopPopupTime = 20; //stop spawning 30 seconds before the end
+let stopPopupTime = 15; //stop spawning 30 seconds before the end
 let videoWidth = 640; 
 let videoHeight = 360; 
-let intervalIntense = 4; // it will multiply the intense in the middle of the game 2x. change as your need
+let intervalIntense = 3; // it will multiply the intense in the middle of the game 2x. change as your need
 
 
 
